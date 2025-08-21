@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Joti+One&display=swap');
+
+:root {
+    --color-background: #C9E6F0;
+    --color-font-principal: #133E87;
+    --color-focus: #7b52eb;
+    --font-titulo-principal: "Joti One", serif;
+    
+    --tamanho-input-numero: 16px;
+    --tamanho-celula: 50px; 
+    --tamanho-subgrid: calc(var(--tamanho-celula) * 3);
+    --tamanho-grid: calc(var(--tamanho-subgrid) * 3);
+}
+
+.conteudo {
+    background-color: var(--color-background);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+}
+
+.conteudo__titulo {
+    font-family: var(--font-titulo-principal);
+    font-size: 3em;
+    font-weight: 700;
+    color: var(--color-font-principal);
+}
+
+.grid {
+    border: 2px solid black;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    min-width: var(--tamanho-celula);
+    min-height: var(--tamanho-celula);
+}
+
+.subgrid {
+    border: 1px solid black;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    min-width: calc(var(--tamanho-celula) * 3);
+    min-height: calc(var(--tamanho-celula) * 3);
+}
+
+.cell {
+    /* mudar fonte dos números */
+    border: 1px solid gray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: calc(var(--tamanho-celula));
+    min-height: calc(var(--tamanho-celula));
+}
+
+.active {
+    background-color: var(--color-focus);
+}
+
+
+
