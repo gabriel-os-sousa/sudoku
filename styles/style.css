@@ -2,12 +2,18 @@
 
 :root {
     --color-background: #C9E6F0;
+    --color-background-selected: #133E87;
     --color-font-principal: #133E87;
-    --color-focus: #7b52eb;
-    --font-titulo-principal: "Joti One", serif;
+    --color-active: #527fcc;
+    --color-font-selected: #FFF;
+    --color-sub-active: #b0c6eb;
+    --color-border-selected: #FFF;
     
+    --font-titulo-principal: "Joti One", serif;
+    --font-principal: "WDXL Lubrifont TC", sans-serif;
+
     --tamanho-input-numero: 16px;
-    --tamanho-celula: 50px; 
+    --tamanho-celula: 50px;
     --tamanho-subgrid: calc(var(--tamanho-celula) * 3);
     --tamanho-grid: calc(var(--tamanho-subgrid) * 3);
 }
@@ -19,6 +25,7 @@
     min-height: 100vh;
     align-items: center;
     justify-content: center;
+    gap: 0;
 }
 
 .conteudo__titulo {
@@ -35,6 +42,7 @@
     grid-template-rows: repeat(3, 1fr);
     min-width: var(--tamanho-celula);
     min-height: var(--tamanho-celula);
+    font-family: var(--font-principal);
 }
 
 .subgrid {
@@ -54,11 +62,68 @@
     align-items: center;
     min-width: calc(var(--tamanho-celula));
     min-height: calc(var(--tamanho-celula));
+    font-weight: 500;
+    font-size: 1.5em;
 }
 
+span.cell:hover {
+    cursor: pointer;
+}
+
+/* TODO: adicionar transition */
 .active {
-    background-color: var(--color-focus);
+    background-color: var(--color-active);
+    font-weight: 700;
+    border: 3px solid transparent;
+    animation: piscarBorda 1s normal;
+}
+
+.sub-active {
+    background-color: var(--color-sub-active);
+}
+
+.sub-active-row-collumn {
+    background-color: var(--color-sub-active);
+}
+
+.selected-cell {
+    border: 3px solid transparent;
+    background-color: var(--color-background-selected);
+    color: var(--color-font-selected);
+    animation: piscarBorda 1s normal;
+}
+
+.digits {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 5px;
+    gap: 1px;
+}
+
+.digit {
+    min-height: var(--tamanho-celula);
+    width: var(--tamanho-celula);
+    align-content: center;
+    text-align: center;
+    font-size: calc(var(--tamanho-input-numero) * 2);
+    font-weight: 700;
+    color: var(--color-font-principal);
+}
+
+.digit:hover {
+    border: 1px solid var(--color-font-principal);
+    cursor: pointer;
 }
 
 
+/* ANIMATIONS */
+@keyframes piscarBorda {
+    0%,100% {
+        border-color: transparent;
+    }
 
+    50% {
+        border-color: #FFF;
+    }
+}
