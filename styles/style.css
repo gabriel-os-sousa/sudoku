@@ -5,6 +5,7 @@
     --color-background-selected: #133E87;
     --color-font-principal: #133E87;
     --color-active: #527fcc;
+    --color-active-inserted: #0046FF;
     --color-font-selected: #FFF;
     --color-sub-active: #b0c6eb;
     --color-border-selected: #FFF;
@@ -70,12 +71,15 @@ span.cell:hover {
     cursor: pointer;
 }
 
-/* TODO: adicionar transition */
 .active {
     background-color: var(--color-active);
     font-weight: 700;
     border: 3px solid transparent;
     animation: piscarBorda 1s normal;
+}
+
+.inserted-success {
+    color: var(--color-active-inserted);
 }
 
 .sub-active {
@@ -116,6 +120,9 @@ span.cell:hover {
     cursor: pointer;
 }
 
+.digit-completed {
+    color: red;
+}
 
 /* ANIMATIONS */
 @keyframes piscarBorda {
