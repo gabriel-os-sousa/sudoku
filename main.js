@@ -1,13 +1,16 @@
 const boardElementsHTML = [];
+var overlayElementHTML;
+var levelElementHTML;
+var resultElementHTML;
 var selectedCell;
 var selectedCellRow;
 var selectedCellCol;
+var numbersToRemoveByLevel;
 var activeGridCellsHTML = [];
 var activeGridCells = [];
 var selectedNumbersCells = [];
 
-// TODO: criar função para gerar jogo válido
-const boardFull = [];
+const boardComplete = [];
 const boardPlayable = [];
 const positionsCandidate = [];
 const digits = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -23,28 +26,60 @@ const CLASS_SELECTED_CELL = "selected-cell";
 const CLASS_ACTIVE = "active";
 const CLASS_SUB_ACTIVE = "sub-active";
 const CLASS_INSERTED_SUCCESS = "inserted-success";
+const CLASS_ACTIVE_OVERLAY = "active-overlay";
+const CLASS_HIDE = "hide";
+const CLASS_LEVEL_BUTTONS_BUTTON = "level__buttons__button";
 
+// Mostra nivel de jogo para usuário iniciar o jogo
+showLevel();
 
-// TODO: colocar para chamar estas funções somente quando for clicado em algum botão "Inicia Jogo"
-initGame();
-loadHTMLElements();
-loadDigitsHTMLElements();
-makeGridInteractive();
-makeDigitsInteractive();
+function initGame(level) {
+    // remover overlay
+    removeClass(overlayElementHTML, CLASS_ACTIVE_OVERLAY);
 
-function initGame() {
+    boardComplete.push(...generateSudokuBoard().map(row => structuredClone(row)));
+    boardPlayable.push(...boardComplete.map(row => structuredClone(row)));
+    removeNumbers(boardPlayable, generateNumbersToRemoveByLevel(level));
 
-    boardFull.push(...generateSudokuBoard().map(row => structuredClone(row)));
-    boardPlayable.push(...boardFull.map(row => structuredClone(row)));
-    /*
-     TODO: usuário deve selecionar o nível
-        Quantos números deve ter inicialmente um jogo?
-        Fácil: geralmente entre 36 a 49 números já preenchidos.
-        Médio: entre 32 a 35 números.
-        Difícil: entre 28 a 31 números.
-        Expert/Desafiador: pode ter menos de 28 números.
-    */
-    removeNumbers(boardPlayable, 75);
+    loadHTMLElements();
+    loadDigitsHTMLElements();
+    makeGridInteractive();
+    makeDigitsInteractive();
+}
+
+function generateNumbersToRemoveByLevel(level) {
+    console.log(level);
+
+    switch (level) {
+        case 0:
+            return numeroAleatorioEntre(40, 45);
+        case 1:
+            return numeroAleatorioEntre(46, 49);
+        case 2:
+            // return numeroAleatorioEntre(81, 81);
+            return numeroAleatorioEntre(50, 53);
+        default:
+            console.log("default")
+            return 35;
+    }
+}
+
+function numeroAleatorioEntre(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function showLevel() {
+    overlayElementHTML = document.getElementById("overlay");
+    levelElementHTML = document.getElementById("level");
+
+    if (overlayElementHTML) {
+        addClass(overlayElementHTML, CLASS_ACTIVE_OVERLAY);
+        let levelsHtml = document.getElementsByClassName(CLASS_LEVEL_BUTTONS_BUTTON);
+
+        for (const levelHtml of levelsHtml) {
+            levelHtml.onclick = () => initGame(parseInt(getCustomAttribute(levelHtml, "data-level")));
+        }
+    }
 }
 
 function removeNumbers(board, numbersToKeep = 35) {
@@ -64,7 +99,7 @@ function removeNumbers(board, numbersToKeep = 35) {
         const backup = board[row][col];
         board[row][col] = 0;
 
-        // TODO: utilizar um solver aqui para ver se tem apenas uma unica solução
+        // TODO: utilizar um solver aqui para ver se tem apenas uma unica solução ou é ambíguo
 
         // Adiciona posições removidas(que podem ser preenchidas) para fazer verificações durante o jogo
         positionsCandidate.push([row, col]);
@@ -126,7 +161,7 @@ function generateSudokuBoard() {
     return generatedBoard;
 }
 
-// recupera célula pelos atributos personalizados data-row(linha) e data-col (coluna)
+// recupera o elemento html da célula pelos atributos personalizados data-row(linha) e data-col (coluna)
 function getCellHtml(row, col) {
     return document.querySelector(`[${ATTRIBUTE_DATA_ROW}="${row}"][${ATTRIBUTE_DATA_COL}="${col}"]`);
 }
@@ -143,8 +178,9 @@ function loadHTMLElements() {
             let cell = getCellHtml(row, col);
             rowList.push(cell)
 
-            // TODO: chegagem para ocultar números baseado no nível
-            if (boardPlayable[row][col] != 0) cell.innerHTML = boardPlayable[row][col];
+            if (boardPlayable[row][col] != 0) {
+                cell.innerHTML = boardPlayable[row][col];
+            }
         }
         boardElementsHTML.push(rowList)
     }
@@ -167,8 +203,8 @@ function updateDigits() {
 
 // Adicionar interação nas células
 function makeGridInteractive() {
-    for (let row = 0; row < boardFull.length; row++) {
-        for (let col = 0; col < boardFull.length; col++) {
+    for (let row = 0; row < boardComplete.length; row++) {
+        for (let col = 0; col < boardComplete.length; col++) {
             addClickCell(row, col);
         }
     }
@@ -268,8 +304,8 @@ function updateSelectedNumbersListCells() {
 
 // pinta números que estão no mesmo subgrid, linha e coluna
 function handleAllCellColors(cell) {
-    for (let row = 0; row < boardFull.length; row++) {
-        for (let col = 0; col < boardFull.length; col++) {
+    for (let row = 0; row < boardComplete.length; row++) {
+        for (let col = 0; col < boardComplete.length; col++) {
             const currentCell = boardElementsHTML[row][col];
             const selectedCellRow = getCustomAttribute(cell, ATTRIBUTE_DATA_ROW);
             const selectedCellCollumn = getCustomAttribute(cell, ATTRIBUTE_DATA_COL);
@@ -330,11 +366,18 @@ function clearGridLayout(clearSelected) {
 
 function verifica() {
     if (isAllRowsValid(boardPlayable) && isAllCollumnsValid(boardPlayable) && isAllSubgridsValid()) {
-        alert("Parabéns!! Jogo concluído com sucesso!")
-        console.log("jogo válido!");
+        showResult();
     } else {
-        console.log("jogo inválido!");
+        console.log("jogo não solucionado!");
     }
+}
+
+function showResult() {
+    resultElementHTML = document.getElementById("result");
+
+    addClass(levelElementHTML, CLASS_HIDE);
+    removeClass(resultElementHTML, CLASS_HIDE);
+    addClass(overlayElementHTML, CLASS_ACTIVE_OVERLAY)
 }
 
 function isAllRowsValid(board) {

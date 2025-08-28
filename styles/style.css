@@ -9,7 +9,11 @@
     --color-font-selected: #FFF;
     --color-sub-active: #b0c6eb;
     --color-border-selected: #FFF;
-    
+
+    --color-overlay-background: #C9E6F0;
+    --color-button-background: #008CBA;
+    --color-button-font: #008CBA;
+
     --font-titulo-principal: "Joti One", serif;
     --font-principal: "WDXL Lubrifont TC", sans-serif;
 
@@ -17,6 +21,107 @@
     --tamanho-celula: 50px;
     --tamanho-subgrid: calc(var(--tamanho-celula) * 3);
     --tamanho-grid: calc(var(--tamanho-subgrid) * 3);
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-overlay-background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.3s ease-in-out;
+}
+
+.overlay.active-overlay {
+    visibility: visible;
+    opacity: 1;
+}
+
+.level {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 30%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.level__titulo {
+    font-weight: 700;
+    color: var(--color-font-principal);
+    text-align: center;
+    font-size: 2rem;
+}
+
+.level__buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-items: center;
+    justify-content: space-between;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.level__buttons__button {
+    background-color: var(--color-font-principal);
+    border: none;
+    border-radius: 16px;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.result {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 30%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.3rem;
+}
+
+.result__titulo {
+    font-weight: 700;
+    color: var(--color-font-principal);
+    text-align: center;
+    font-size: 2rem;
+}
+
+.result__button {
+    background-color: var(--color-font-principal);
+    border: none;
+    border-radius: 16px;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 20%;
+    cursor: pointer;
+}
+
+.hide {
+    display: none;
 }
 
 .conteudo {
@@ -126,7 +231,9 @@ span.cell:hover {
 
 /* ANIMATIONS */
 @keyframes piscarBorda {
-    0%,100% {
+
+    0%,
+    100% {
         border-color: transparent;
     }
 

@@ -10,6 +10,21 @@
 </head>
 
 <body>
+    <div class="overlay" id="overlay">
+        <div class="level" id="level">
+            <h2 class="level__titulo">Selecione o nível do jogo</h2>
+            <div class="level__buttons">
+                <button class="level__buttons__button" data-level="0">Fácil</button>
+                <button class="level__buttons__button" data-level="1">Médio</button>
+                <button class="level__buttons__button" data-level="2">Difícil</button>
+            </div>
+        </div>
+        <div class="result hide" id="result">
+            <h2 class="result__titulo">Parabéns!</h2>
+            <p>Você concluiu o jogo</p>
+            <button class="result__button">Jogar novamente</button>
+        </div>
+    </div>
     <main class="conteudo">
         <h1 class="conteudo__titulo">Sudoku</h1>
         <section class="grid">
@@ -114,18 +129,18 @@
             </div>
         </section>
         <div class="digits">
-                <span class="digit" data-digit="1">1</span>
-                <span class="digit" data-digit="2">2</span>
-                <span class="digit" data-digit="3">3</span>
-                <span class="digit" data-digit="4">4</span>
-                <span class="digit" data-digit="5">5</span>
-                <span class="digit" data-digit="6">6</span>
-                <span class="digit" data-digit="7">7</span>
-                <span class="digit" data-digit="8">8</span>
-                <span class="digit" data-digit="9">9</span>
-            </div>
+            <span class="digit" data-digit="1">1</span>
+            <span class="digit" data-digit="2">2</span>
+            <span class="digit" data-digit="3">3</span>
+            <span class="digit" data-digit="4">4</span>
+            <span class="digit" data-digit="5">5</span>
+            <span class="digit" data-digit="6">6</span>
+            <span class="digit" data-digit="7">7</span>
+            <span class="digit" data-digit="8">8</span>
+            <span class="digit" data-digit="9">9</span>
+        </div>
     </main>
     <script src="main.js"></script>
-    <!-- <script src="teste.js"></script> -->
 </body>
+
 </html>
