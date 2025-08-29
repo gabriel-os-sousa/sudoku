@@ -39,7 +39,7 @@ function initGame(level) {
 
     boardComplete.push(...generateSudokuBoard().map(row => structuredClone(row)));
     boardPlayable.push(...boardComplete.map(row => structuredClone(row)));
-    removeNumbers(boardPlayable, generateNumbersToRemoveByLevel(level));
+    removeNumbers(boardPlayable, generateNumbersToKeepByLevel(level));
 
     loadHTMLElements();
     loadDigitsHTMLElements();
@@ -47,19 +47,18 @@ function initGame(level) {
     makeDigitsInteractive();
 }
 
-function generateNumbersToRemoveByLevel(level) {
-    console.log(level);
-
+function generateNumbersToKeepByLevel(level) {
     switch (level) {
+        // fácil
         case 0:
-            return numeroAleatorioEntre(40, 45);
+            return numeroAleatorioEntre(50, 53);
+        // médio
         case 1:
             return numeroAleatorioEntre(46, 49);
+        // difícil
         case 2:
-            // return numeroAleatorioEntre(81, 81);
-            return numeroAleatorioEntre(50, 53);
+            return numeroAleatorioEntre(40, 45);
         default:
-            console.log("default")
             return 35;
     }
 }
@@ -246,11 +245,12 @@ function addClickCell(row, col) {
 function addClickDigit(i) {
     let digit = digitsElementsHTML[i];
     digit.onclick = function (event) {
-        // limpa visualização de cores do grid
-        clearGridLayout(false);
 
         // só posso adicionar o número em lugares que o valor está na lista de valores removidos e se tiver célula selecionada
         if (selectedCell && positionsCandidate.some(([row, col]) => row == selectedCellRow && col == selectedCellCol)) {
+            // limpa visualização de cores do grid
+            clearGridLayout(false);
+
             selectedCell.innerHTML = digit.innerHTML
             boardPlayable[selectedCellRow][selectedCellCol] = parseInt(digit.innerHTML);
 
